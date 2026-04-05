@@ -1849,37 +1849,25 @@ footer {
     <div class="legal-wrapper">
       <table class="legal-table">
         <tbody>
-          <tr>
-            <th>販売業者</th>
-            <td>TrendHub</td>
-          </tr>
-          <tr>
-            <th>代表責任者</th>
-            <td>渡邉 宜彦</td>
-          </tr>
-          <tr>
-            <th>所在地</th>
-            <td>神奈川県横浜市港北区綱島西2-1-7 708</td>
-          </tr>
-          <tr>
-            <th>電話番号</th>
-            <td>045-541-8004</td>
-          </tr>
-          <tr>
-            <th>E-MAIL</th>
-            <td>
-              <script>
-                (function() {
-                  var user = "trendhub.biz";
-                  var domain = "gmail.com";
-                  var email = user + "@" + domain;
-                  document.write('<a href="mailto:' + email + '" style="color: var(--ice); text-decoration: underline;">' + email + '</a>');
-                })();
-              </script>
-              <noscript>trendhub.bz [at] gmail.com</noscript>
-            </td>
-          </tr>
-          <tr>
+<tr>
+    <th>販売業者</th>
+    <td>TrendHub</td>
+  </tr>
+  <tr>
+    <th>運営責任者</th>
+    	<td id="rep-name"></td> </tr>
+  		<tr>
+    	 	<th>所在地</th>
+  		   <td id="rep-addr"></td> </tr>
+ 		  <tr>
+  		   <th>電話番号</th>
+  		   <td id="rep-tel"></td>
+  		 </tr>
+ 		  <tr>
+  		   <th>E-MAIL</th>
+  		   <td id="rep-email"></td>
+  		 </tr>
+ 		  <tr>
             <th>販売価格</th>
             <td>月額 2,980円 〜 14,800円（税込）</td>
           </tr>
@@ -1940,7 +1928,7 @@ footer {
       </div>
       <div class="disclaimer-card" data-num="04">
         <div class="disclaimer-title">プライバシーポリシー</div>
-        <p class="disclaimer-text">お客様の決済情報はStripeのセキュアな決済インフラを通じて管理されます。当方がクレジットカード情報を直接保有・管理することはありません。取得した個人情報は、サポート対応およびサービスに関連する案内の目的においてのみ、厳重に管理いたします。</p>
+        <p class="disclaimer-text">お客様の決済情報は暗号化された安全な決済インフラを通じて管理されます。当方がクレジットカード情報を直接保有・管理することはありません。取得した個人情報は、サポート対応およびサービスに関連する案内の目的においてのみ、厳重に管理いたします。</p>
       </div>
     </div>
   </div>
@@ -2040,5 +2028,56 @@ document.querySelectorAll('.ai-card, .pricing-card, .disclaimer-card, .vip-banne
   observer.observe(el);
 });
 </script>
-</body>
+<script>
+(function() {
+    /**
+     * @param {string} id - 流し込み先の要素ID
+     * @param {number[]} codes - Unicode配列
+     * @param {string} type - 'text' | 'tel' | 'mail'
+     */
+    function _aegisShield(id, codes, type) {
+        var s = "";
+        for (var i = 0; i < codes.length; i++) s += String.fromCharCode(codes[i]);
+        var t = document.getElementById(id);
+        if (!t) return;
+
+        if (type === 'mail') {
+            t.innerHTML = '<a href="mailto:' + s + '" style="color:var(--ice); text-decoration:underline;">' + s + '</a>';
+        } else if (type === 'tel') {
+            t.innerHTML = '<a href="tel:' + s.replace(/-/g, '') + '" style="color:inherit; text-decoration:none;">' + s + '</a>';
+        } else {
+            t.innerHTML = s;
+        }
+    }
+
+    // --- 各項目のUnicodeデータ設定 ---
+
+    // 1. 運営責任者：渡邉 宜彦（プロジェクトリーダー：佐伯 宗真）
+    var nameCodes = [
+        28193, 37001, 32, 23452, 24421, // 渡邉 宜彦
+        32, 40, 12503, 12525, 12472, 12455, 12463, 12488, 12522, 12540, 12480, 12540, 65306, // (プロジェクトリーダー：
+        20304, 20271, 32, 28234, 41 // 佐伯 宗真)
+    ];
+    _aegisShield("rep-name", nameCodes, 'text');
+
+    // 2. 所在地：神奈川県横浜市港北区綱島西2-1-7 708
+    var addrCodes = [
+        31070, 22856, 24029, 30476, // 神奈川県
+        27178, 27996, 24066, // 横浜市
+        28207, 21271, 21306, // 港北区
+        32177, 23798, 35199, // 綱島西
+        50, 45, 49, 45, 55, 32, 55, 48, 56 // 2-1-7 708
+    ];
+    _aegisShield("rep-addr", addrCodes, 'text');
+
+    // 3. 電話番号：045-541-8004
+    var telCodes = [48, 52, 53, 45, 53, 52, 49, 45, 56, 48, 48, 52];
+    _aegisShield("rep-tel", telCodes, 'tel');
+
+    // 4. メールアドレス：trendhub.biz@gmail.com
+    var mailCodes = [116, 114, 101, 110, 100, 104, 117, 98, 46, 98, 105, 122, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+    _aegisShield("rep-email", mailCodes, 'mail');
+
+})();
+</script></body>
 </html>
